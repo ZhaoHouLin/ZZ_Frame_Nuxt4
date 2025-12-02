@@ -11,6 +11,7 @@ import {
   useNotification,
   NUploadDragger,
   NIcon,
+  NScrollbar,
 } from "naive-ui"
 import { Upload } from "@vicons/tabler"
 
@@ -93,17 +94,20 @@ onMounted(loadFiles)
 </script>
 
 <template lang="pug">
+.file-manager
   NCard(title="檔案管理")
     NSpace(vertical size="large")
     div
-      NH3 上傳檔案
-      NUpload(
+      h3 上傳檔案
+      NScrollbar(style="max-height: 200px;")
+        NUpload(
           ref="uploadRef"
           name="files"
           multiple
           :max="10",
           directory-dnd
           :action="uploadUrl"
+
           :with-credentials="true"
           response-type="json"
           @finish="onUploadFinish"
@@ -111,25 +115,35 @@ onMounted(loadFiles)
           @error="onUploadError"
           @exceed="onExceed"
         )
-        NUploadDragger  
-          NIcon(size="40" color="#555")
-            Upload
-          p 拖曳檔案到這裡，或點擊選擇檔案上傳 
-        //- NButton(type="primary") 選擇或拖曳檔案上傳
+          NUploadDragger  
+            NIcon(size="40" color="#555")
+              Upload
+            p 拖曳檔案到這裡，或點擊選擇檔案上傳 
+          //- NButton(type="primary") 選擇或拖曳檔案上傳
       NProgress(v-if="uploadProgress > 0 && uploadProgress < 100"
           :percentage="uploadProgress"
           type="line"
           indicator-placement="outside"
           processing)
     div
-      NH3 已上傳檔案
-      NList(bordered)
-        NListItem(v-for="file in files" :key="file")
-          NSpace( justify="space-between" align="center")
-            span {{ file }}
-            NButton(size="small" tertiary @click="downloadFile(file)") 下載
-    .text-right
-      NButton(type="error" @click="logout") 登出
+      h3 已上傳檔案
+      NScrollbar(style="max-height: 200px; margin-bottom: 1rem;")
+        NList(bordered)
+          NListItem(v-for="file in files" :key="file")
+            NSpace( justify="space-between" align="center")
+              span {{ file }}
+              NButton(size="small" tertiary @click="downloadFile(file)") 下載
+
+    NButton.logout(type="error" @click="logout") 登出
 </template>
 
-<style lang="stylus" scoped></style>
+<style lang="stylus">
+.file-manager
+  size()
+  flex()
+  .n-card
+    size()
+
+h3
+  margin-top 1rem
+</style>
