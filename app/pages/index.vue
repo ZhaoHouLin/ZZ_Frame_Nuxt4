@@ -29,14 +29,6 @@ const login = async () => {
   })
   alert(res.success)
 }
-const logout = () => {
-  // 用 useCookie 刪除 cookie
-  const cookie = useCookie("ad_session")
-  cookie.value = null
-
-  // 導回登入頁
-  navigateTo("/login")
-}
 </script>
 
 <template lang="pug">

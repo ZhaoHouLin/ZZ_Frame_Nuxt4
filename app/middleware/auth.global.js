@@ -1,18 +1,22 @@
-import { jwtVerify } from "jose"
+import { useAuthStore } from '../../stores/auth.js'
 
 export default defineNuxtRouteMiddleware(async (to) => {
-  const cookie = useCookie('ad_session')
-  // 🟢 如果已登入
-  if (cookie.value) {
-    // 若使用者想去登入頁，直接導回首頁
-    if (to.path === '/login') {
-      return navigateTo('/')
-    }
-  } else {
-    // 🔴 若沒登入但想進非登入頁 → 擋掉
-    if (to.path !== '/login') {
-      return navigateTo('/login')
-    }
+
+  // // ✅ 已登入 → 正常放行
+  const auth = useAuthStore()
+
+  if (to.path === '/login') return
+  const { data } = await useFetch('/api/me', { credentials: 'include' })
+
+  if (!data.value?.loggedIn) {
+    return navigateTo('/login') // ✅ SSR 或 CSR 都會導向
   }
 
+  // if (!auth.loggedIn) {
+  //   await auth.fetchMe()
+  // }
+
+  // if (!auth.loggedIn) {
+  //   return navigateTo('/login')
+  // }
 })

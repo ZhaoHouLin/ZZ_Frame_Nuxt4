@@ -1,6 +1,10 @@
 <script setup>
 import { NCard, NInput, NButton } from "naive-ui"
 
+definePageMeta({
+  middleware: "guest",
+})
+
 const username = ref("")
 const password = ref("")
 const message = ref("")
@@ -17,7 +21,8 @@ const login = async () => {
       console.log("✅ 登入成功，導向首頁")
       await navigateTo("/") // 🔹 這一步很重要
     } else {
-      error.value = res.message || "登入失敗"
+      // error.value = res.message || "登入失敗"
+      console.error("❌ 登入失敗:", res.message)
     }
   } catch (err) {
     message.value = "登入錯誤"

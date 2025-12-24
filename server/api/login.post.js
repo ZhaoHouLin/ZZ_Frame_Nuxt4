@@ -37,11 +37,11 @@ export default defineEventHandler(async (event) => {
 
         // 設定 cookie
         setCookie(event, 'ad_session', token, {
-          // httpOnly: true,
+          httpOnly: true,
           secure: process.env.NODE_ENV === 'production',
           path: '/',
           maxAge: 60 * 60 * 2,
-          // sameSite: 'lax',
+          sameSite: 'lax',
         })
 
         resolve({ success: true, message: '登入成功' })

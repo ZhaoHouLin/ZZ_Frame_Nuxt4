@@ -85,9 +85,10 @@ const downloadFile = (filename) => {
 }
 
 // 登出
-const logout = () => {
-  document.cookie = "ad_session=; Path=/; Max-Age=0;"
-  navigateTo("/login")
+const logout = async () => {
+  await $fetch("/api/logout", { method: "POST" })
+  // await navigateTo("/login")
+  window.location.href = "/login" // 用此方法才會回到login
 }
 
 onMounted(loadFiles)
