@@ -5,6 +5,8 @@ import { setCookie } from 'h3'
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const { username, password } = body
+  const isHttps =
+    event.node.req.headers['x-forwarded-proto'] === 'https'
 
   const token = getCookie(event, 'ad_session')
   if (token) {
@@ -18,8 +20,10 @@ export default defineEventHandler(async (event) => {
     return { success: false, message: '請輸入帳號與密碼' }
   }
 
-  const LDAP_URL = process.env.LDAP_URL
-  const DOMAIN = process.env.LDAP_DOMAIN
+  const config = useRuntimeConfig()
+
+  const LDAP_URL = config.LDAP_URL
+  const DOMAIN = config.LDAP_DOMAIN
   const client = ldap.createClient({ url: LDAP_URL })
   const userDN = `${username}@${DOMAIN}`
 
@@ -33,12 +37,13 @@ export default defineEventHandler(async (event) => {
           .setProtectedHeader({ alg: 'HS256' })
           .setIssuedAt()
           .setExpirationTime('2h') // 兩小時有效
-          .sign(new TextEncoder().encode(process.env.JWT_SECRET))
+          .sign(new TextEncoder().encode(config.JWT_SECRET))
 
         // 設定 cookie
         setCookie(event, 'ad_session', token, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
+          // secure: config.NODE_ENV === 'production',
+          secure: isHttps,
           path: '/',
           maxAge: 60 * 60 * 2,
           sameSite: 'lax',

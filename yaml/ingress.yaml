@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nuxt3-test
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - nuxt.cdc.internal
+      secretName: nuxt3-test-tls
+  rules:
+    - host: nuxt.cdc.internal
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: nuxt3-nodeport-test
+                port:
+                  number: 80

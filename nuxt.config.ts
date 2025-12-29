@@ -73,6 +73,8 @@ export default defineNuxtConfig({
   ],
   runtimeConfig: {
     JWT_SECRET: process.env.JWT_SECRET,
+    LDAP_URL: process.env.LDAP_URL,
+    LDAP_DOMAIN: process.env.LDAP_DOMAIN,
     UPLOAD_DIR: process.env.UPLOAD_DIR,
     public: {},
   },

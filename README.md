@@ -14,3 +14,6 @@ Nuxt4 架構
 - LDAP_URL=ldap://xxx.yyy.zzz
 - LDAP_DOMAIN=xxx.yyy.zzz
 - UPLOAD_DIR=<目的資料夾路徑>
+
+UPLOAD_DIR=/uploads
+需注意容器掛載路徑
