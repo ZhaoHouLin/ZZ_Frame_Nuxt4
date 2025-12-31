@@ -116,5 +116,4 @@ type: Opaque
 stringData:
   username: NAS帳號
   password: NAS密碼
-
 ```
