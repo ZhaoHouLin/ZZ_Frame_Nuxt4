@@ -24,4 +24,4 @@ logs
 !.env.example
 
 # k8s-yaml
-# *.yaml
+smb-secret.yaml
