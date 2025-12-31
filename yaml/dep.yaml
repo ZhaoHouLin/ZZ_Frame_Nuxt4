@@ -15,11 +15,20 @@ spec:
       labels:
         app: nuxt3-test
     spec:
+      securityContext:
+        fsGroup: 1000
       containers:
         - image: localhost:5000/nuxt3-test:latest
           name: nuxt3-test
           resources: {}
           envFrom:
             - secretRef:
-                name: nuxt3-test-secret
+                name: nuxt3-dep-secret
+          volumeMounts:
+            - name: uploads
+              mountPath: /uploads
+      volumes:
+        - name: uploads
+          persistentVolumeClaim:
+            claimName: smb-pvc
 status: {}
