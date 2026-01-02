@@ -3,12 +3,13 @@
 Nuxt4 架構
 存放我常用的資料夾結構
 
-### 功能
+## 功能
 
 - 可用 AD 帳號登入
 - 上傳下載資料
+- 可容器化佈署
 
-### .env 內容
+## .env 內容
 
 - JWT_SECRET=<驗證密鑰>
 - LDAP_URL=ldap://xxx.yyy.zzz
@@ -18,7 +19,7 @@ Nuxt4 架構
 UPLOAD_DIR=/uploads
 需注意容器掛載路徑
 
-### yaml
+## yaml
 
 - 檔名前綴為 xxx 表示參考但實測未通過
 
@@ -60,6 +61,8 @@ spec:
             claimName: smb-pvc
 status: {}
 ```
+
+### smb
 
 smb-pv.yaml
 
@@ -116,4 +119,40 @@ type: Opaque
 stringData:
   username: NAS帳號
   password: NAS密碼
+```
+
+### nfs
+
+nfs-pv.yaml
+
+```
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-pv
+spec:
+  capacity:
+    storage: 100Gi # 宣告容量大小
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany # 允許多個 Pod 同時讀寫
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    path: /volume1/kubernetes # NAS 上的實際路徑
+    server: 192.168.79.99 # NAS IP
+```
+
+nfs-pvc.yaml
+
+```
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
 ```
