@@ -30,5 +30,5 @@ spec:
       volumes:
         - name: uploads
           persistentVolumeClaim:
-            claimName: smb-pvc
+            claimName: nfs-pvc
 status: {}

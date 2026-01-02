@@ -10,5 +10,5 @@ spec:
     - ReadWriteMany # 允許多個 Pod 同時讀寫
   persistentVolumeReclaimPolicy: Retain
   nfs:
-    path: /volume1/Tools # NAS 上的實際路徑
-    server: 192.168.171.124 # NAS IP
+    path: /volume1/kubernetes # NAS 上的實際路徑
+    server: 192.168.79.99 # NAS IP
