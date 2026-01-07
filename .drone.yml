@@ -14,6 +14,7 @@ steps:
       insecure: true
       # 同時傳遞給內部的 docker build
       network_mode: host
+      custom_dns: [192.168.69.1, 192.168.171.43]
       username:
         from_secret: harbor_username
       password:
