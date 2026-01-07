@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: harbor-test
+  name: harbor-test
+  namespace: harbor
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: harbor-test
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: harbor-test
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - image: 192.168.79.99:5002/library/demo-app:latest
+          name: harbor-test
+          command: ["/bin/sh", "-c", "sleep infinity"] # 讓容器無限期睡眠，方便你進入檢查
+      # 關鍵部分：引用剛剛建立的 Secret
+      imagePullSecrets:
+        - name: harbor-registry-secret

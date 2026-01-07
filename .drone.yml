@@ -1,0 +1,9 @@
+kind: pipeline
+type: docker
+name: test-pipeline
+
+steps:
+  - name: greeting
+    image: alpine
+    commands:
+      - echo "Hello, Nuxt4 project is connected!"
