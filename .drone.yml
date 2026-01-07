@@ -3,25 +3,22 @@ type: docker
 name: build-and-deploy
 
 steps:
-  # 第一步：打包 Docker 鏡像並推送到 Harbor
   - name: build-push-harbor
     image: plugins/docker
+    # 這裡加入網路配置，讓建構容器跟 NAS 主機用同一個網路
+    network_mode: host
     settings:
       registry: 192.168.79.99:5002
       repo: 192.168.79.99:5002/library/zz-frame-nuxt4
       tags: latest
-      # 針對 HTTP Harbor 的關鍵設定
       insecure: true
-      # 關鍵：讓 Docker build 過程使用宿主機網路，直接避開 DNS 隔離
+      # 同時傳遞給內部的 docker build
       network_mode: host
       username:
         from_secret: harbor_username
       password:
         from_secret: harbor_password
-      # Nuxt 4 建構時可能需要較多記憶體
-      dockerfile: Dockerfile
 
-  # 第二步：通知 K8s 更新（這裡示範最簡單的重啟指令）
   - name: refresh-k8s
     image: bitnami/kubectl:latest
     commands:
