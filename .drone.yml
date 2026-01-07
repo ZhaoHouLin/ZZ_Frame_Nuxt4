@@ -7,7 +7,6 @@ steps:
   - name: install-deps
     image: node:20-alpine
     # 這裡關鍵：強迫這個步驟用 host 網路
-    network_mode: host
     commands:
       - npm config set registry https://registry.npmmirror.com
       - npm install
@@ -20,8 +19,6 @@ steps:
       repo: 192.168.79.99:5002/library/zz-frame-nuxt4
       tags: latest
       insecure: true
-      # 同時傳遞給內部的 docker build
-      network_mode: host
       custom_dns: [192.168.69.1, 192.168.171.43]
       username:
         from_secret: harbor_username
