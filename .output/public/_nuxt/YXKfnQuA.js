@@ -1,0 +1,1 @@
+import r from"./vzY8j4ZN.js";import{e,o}from"./R1HqGcmH.js";const p={__name:"error",setup(t){return(a,s)=>(o(),e(r,{error:{statusCode:500,message:"An unexpected error occurred. Please try again later."}}))}};export{p as default};

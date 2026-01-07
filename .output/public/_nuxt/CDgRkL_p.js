@@ -1,0 +1,1 @@
+import{R as s,S as o,U as u,P as n}from"./R1HqGcmH.js";const d=s(async()=>{let e,t;const{data:a}=([e,t]=o(()=>u("/api/me","$N3YusqdLvZ")),e=await e,t(),e);if(a.value?.loggedIn)return n("/")});export{d as default};
