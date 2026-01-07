@@ -13,7 +13,7 @@ steps:
       # 針對 HTTP Harbor 的關鍵設定
       insecure: true
       # 關鍵：加入 DNS 設定，解決 EAI_AGAIN 問題
-      custom_dns: [8.8.8.8, 8.8.4.4]
+      custom_dns: [192.168.69.1, 192.168.171.43]
       username:
         from_secret: harbor_username
       password:
