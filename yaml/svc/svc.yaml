@@ -2,15 +2,15 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: nuxt3-test
-  name: nuxt3-test
+    app: zz_frame-test
+  name: zz_frame-test
 spec:
   ports:
     - port: 80
       protocol: TCP
       targetPort: 3000
   selector:
-    app: nuxt3-test
+    app: zz_frame-test
   type: ClusterIP
 status:
   loadBalancer: {}

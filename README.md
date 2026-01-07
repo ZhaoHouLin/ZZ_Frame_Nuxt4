@@ -19,6 +19,14 @@ Nuxt4 架構
 UPLOAD_DIR=/uploads
 需注意容器掛載路徑
 
+以上建立 secret 使用
+
+```
+envFrom:
+  - secretRef:
+      name: zz_frame-dep-secret
+```
+
 ## yaml
 
 - 檔名前綴為 xxx 表示參考但實測未通過
@@ -30,28 +38,28 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: nuxt3-test
-  name: nuxt3-test
+    app: zz_frame-test
+  name: zz_frame-test
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: nuxt3-test
+      app: zz_frame-test
   strategy: {}
   template:
     metadata:
       labels:
-        app: nuxt3-test
+        app: zz_frame-test
     spec:
       securityContext:
         fsGroup: 1000
       containers:
-        - image: localhost:5000/nuxt3-test:latest
-          name: nuxt3-test
+        - image: localhost:5000/zz_frame-test:latest
+          name: zz_frame-test
           resources: {}
           envFrom:
             - secretRef:
-                name: nuxt3-dep-secret
+                name: zz_frame-dep-secret
           volumeMounts:
             - name: uploads
               mountPath: /uploads

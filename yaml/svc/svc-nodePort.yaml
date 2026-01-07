@@ -2,8 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: nuxt3-test
-  name: nuxt3-nodeport-test
+    app: zz_frame-test
+  name: zz_frame-nodeport-test
 spec:
   type: NodePort
   ports:
@@ -12,6 +12,6 @@ spec:
       targetPort: 3000
       nodePort: 30080
   selector:
-    app: nuxt3-test
+    app: zz_frame-test
 status:
   loadBalancer: {}
