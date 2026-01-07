@@ -3,6 +3,15 @@ type: docker
 name: build-and-deploy
 
 steps:
+  # 第一步：直接用 node 鏡像下載套件（測試是否能通）
+  - name: install-deps
+    image: node:20-alpine
+    # 這裡關鍵：強迫這個步驟用 host 網路
+    network_mode: host
+    commands:
+      - npm config set registry https://registry.npmmirror.com
+      - npm install
+
   - name: build-push-harbor
     image: plugins/docker
     # 這裡加入網路配置，讓建構容器跟 NAS 主機用同一個網路
