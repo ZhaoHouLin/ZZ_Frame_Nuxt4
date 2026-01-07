@@ -1,9 +1,27 @@
 kind: pipeline
 type: docker
-name: test-pipeline
+name: build-and-deploy
 
 steps:
-  - name: greeting
-    image: alpine
+  # 第一步：打包 Docker 鏡像並推送到 Harbor
+  - name: build-push-harbor
+    image: plugins/docker
+    settings:
+      registry: 192.168.79.99:5002
+      repo: 192.168.79.99:5002/library/zz-frame-nuxt4
+      tags: latest
+      # 針對 HTTP Harbor 的關鍵設定
+      insecure: true
+      username:
+        from_secret: harbor_username
+      password:
+        from_secret: harbor_password
+      # Nuxt 4 建構時可能需要較多記憶體
+      dockerfile: Dockerfile
+
+  # 第二步：通知 K8s 更新（這裡示範最簡單的重啟指令）
+  - name: refresh-k8s
+    image: bitnami/kubectl:latest
     commands:
-      - echo "Hello, Nuxt4 project is connected!"
+      # 這邊假設你已經把 K8s 的憑證設為環境變數，或是先略過這步手動測試
+      - echo "Image pushed to Harbor successfully!"
