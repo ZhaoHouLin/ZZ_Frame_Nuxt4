@@ -2,7 +2,14 @@
 FROM node:20-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
-RUN npm install
+# 在安裝前先檢查網路與解析
+RUN cat /etc/resolv.conf && \
+    ping -c 1 registry.npmjs.org || echo "DNS Failed" && \
+    npm config set registry https://registry.npmmirror.com && \
+    npm install --network-timeout=100000
+    
+RUN echo "104.16.27.35 registry.npmjs.org" >> /etc/hosts && \
+    npm install
 COPY . .
 RUN npm run build
 
