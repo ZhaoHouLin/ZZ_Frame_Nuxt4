@@ -6,7 +6,6 @@ steps:
   - name: build-push-harbor
     image: plugins/docker
     # 這裡加入網路配置，讓建構容器跟 NAS 主機用同一個網路
-    network_mode: host
     settings:
       registry: 192.168.79.99:5002
       repo: 192.168.79.99:5002/library/zz-frame-nuxt4
