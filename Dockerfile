@@ -2,7 +2,8 @@
 FROM node:20-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
-# 在安裝前先檢查網路與解析
+# 強制在容器的 hosts 檔案中加入 IP 映射，繞過 DNS 解析
+# 這裡使用 221.229.205.165 (npmmirror 的一個常用 IP)
 RUN echo "221.229.205.165 registry.npmmirror.com" >> /etc/hosts && \
     echo "104.16.27.35 registry.npmjs.org" >> /etc/hosts && \
     npm config set registry https://registry.npmmirror.com && \
