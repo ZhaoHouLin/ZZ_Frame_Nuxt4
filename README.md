@@ -1,13 +1,19 @@
-# ZZ_Frame_Nuxt4
+# ZZ_Frame_Nuxt
 
-Nuxt4 架構
-存放我常用的資料夾結構
+目前使用 Nuxt4 架構
+存放我常用的資料夾結構及 cicd 容器化 腳本檔案
 
 ## 功能
 
 - 可用 AD 帳號登入
 - 上傳下載資料
 - 可容器化佈署
+
+## ci/cd 架構
+
+- Gitea 開源程式碼儲存庫
+- Drone 自動化構建
+- Harbor 映象檔儲存庫
 
 ## .env 內容
 
