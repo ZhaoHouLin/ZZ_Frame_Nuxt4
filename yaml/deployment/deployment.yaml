@@ -2,28 +2,28 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: ZZ_Frame
-  name: ZZ_Frame
+    app: ZZ-Frame
+  name: ZZ-Frame
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: ZZ_Frame
+      app: ZZ-Frame
   strategy: {}
   template:
     metadata:
       labels:
-        app: ZZ_Frame
+        app: ZZ-Frame
     spec:
       securityContext:
         fsGroup: 1000
       containers:
-        - image: localhost:5000/ZZ_Frame:latest
-          name: ZZ_Frame
+        - image: localhost:5000/ZZ-Frame:latest
+          name: ZZ-Frame
           resources: {}
           envFrom:
             - secretRef:
-                name: zz_frame-dep-secret
+                name: zz-frame-dep-secret
           volumeMounts:
             - name: uploads
               mountPath: /uploads

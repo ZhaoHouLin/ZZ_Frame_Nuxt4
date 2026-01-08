@@ -2,8 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: zz_frame-test
-  name: zz_frame-nodeport-test
+    app: zz-frame-test
+  name: zz-frame-nodeport-test
 spec:
   type: NodePort
   ports:
@@ -12,6 +12,6 @@ spec:
       targetPort: 3000
       nodePort: 30080
   selector:
-    app: zz_frame-test
+    app: zz-frame-test
 status:
   loadBalancer: {}

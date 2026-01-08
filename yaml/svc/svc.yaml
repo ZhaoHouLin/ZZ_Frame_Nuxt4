@@ -2,15 +2,15 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: zz_frame-test
-  name: zz_frame-test
+    app: zz-frame-test
+  name: zz-frame-test
 spec:
   ports:
     - port: 80
       protocol: TCP
       targetPort: 3000
   selector:
-    app: zz_frame-test
+    app: zz-frame-test
   type: ClusterIP
 status:
   loadBalancer: {}
