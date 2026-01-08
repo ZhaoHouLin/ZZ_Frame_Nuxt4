@@ -1,6 +1,6 @@
 kind: pipeline
 type: docker
-name: build-and-deploy
+name: deploy-nuxt
 
 steps:
   # 第一步：直接用 node 鏡像下載套件（測試是否能通）
@@ -18,29 +18,34 @@ steps:
       registry: 192.168.79.99:5002
       repo: 192.168.79.99:5002/library/zz-frame-nuxt4
       tags: latest
-      insecure: true
-      custom_dns: [192.168.69.1, 192.168.171.43]
+      insecure: true # 這是因為我們 Harbor 用的是 HTTP
+      privileged: true # 配合你剛才勾選的 Trusted
+      # custom_dns: [192.168.69.1, 192.168.171.43]
       username:
         from_secret: harbor_username
       password:
         from_secret: harbor_password
 
-  - name: deploy-k8s
-    image: appleboy/drone-ssh
-    settings:
-      host: 192.168.79.100
-      username: zz
-      password:
-        from_secret: ssh_password
-      script:
-        # 1. 先確保遠端有一個目錄存放設定檔
-        - mkdir -p /home/zz/deployments/zz-frame-nuxt4
-        # 2. 這裡我們改用 scp 插件同步檔案，或者直接在 script 裡寫入
-        - echo "${KUBERNETES_YAML}" > /home/zz/deployments/zz-frame-nuxt4/deployment.yaml
-        - kubectl apply -f /home/zz/deployments/zz-frame-nuxt4/deployment.yaml
-        - kubectl rollout restart deployment/zz-frame-nuxt4
-  # - name: refresh-k8s
-  #   image: bitnami/kubectl:latest
-  #   commands:
-  #     # 這邊假設你已經把 K8s 的憑證設為環境變數，或是先略過這步手動測試
-  #     - echo "Image pushed to Harbor successfully!"
+trigger:
+  branch:
+    - main
+
+  # - name: deploy-k8s
+  #   image: appleboy/drone-ssh
+  #   settings:
+  #     host: 192.168.79.100
+  #     username: zz
+  #     password:
+  #       from_secret: ssh_password
+  #     script:
+  #       # 1. 先確保遠端有一個目錄存放設定檔
+  #       - mkdir -p /home/zz/deployments/zz-frame-nuxt4
+  #       # 2. 這裡我們改用 scp 插件同步檔案，或者直接在 script 裡寫入
+  #       - echo "${KUBERNETES_YAML}" > /home/zz/deployments/zz-frame-nuxt4/deployment.yaml
+  #       - kubectl apply -f /home/zz/deployments/zz-frame-nuxt4/deployment.yaml
+  #       - kubectl rollout restart deployment/zz-frame-nuxt4
+  # # - name: refresh-k8s
+  # #   image: bitnami/kubectl:latest
+  # #   commands:
+  # #     # 這邊假設你已經把 K8s 的憑證設為環境變數，或是先略過這步手動測試
+  # #     - echo "Image pushed to Harbor successfully!"

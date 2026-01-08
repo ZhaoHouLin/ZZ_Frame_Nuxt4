@@ -1,10 +1,15 @@
+# 使用 node 20 做為編譯環境
+FROM node:20-slim AS builder
+WORKDIR /app
+COPY . .
+RUN npm install && npm run build
+
+# 執行環境
 FROM node:20-slim
 WORKDIR /app
-# 直接把我們在外面編譯好的 .output 複製進去
-COPY .output ./.output
+COPY --from=builder /app/.output ./.output
 EXPOSE 3000
 CMD ["node", ".output/server/index.mjs"]
-
 
 
 
