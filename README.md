@@ -11,12 +11,14 @@ Nuxt4 架構
 
 ## .env 內容
 
-- JWT_SECRET=<驗證密鑰>
-- LDAP_URL=ldap://xxx.yyy.zzz
-- LDAP_DOMAIN=xxx.yyy.zzz
-- UPLOAD_DIR=<目的資料夾路徑>
+- NUXT_JWT_SECRET=<驗證密鑰>
+- NUXT_LDAP_URL=ldap://xxx.yyy.zzz
+- NUXT_LDAP_DOMAIN=xxx.yyy.zzz
+- NUXT_UPLOAD_DIR=<目的資料夾路徑>
 
-UPLOAD_DIR=/uploads
+補充:Nuxt 的安全管理模式。 useRuntimeConfig 的設計是為了讓你可以在不重新打包 Docker Image 的情況下更改設定，而它規定的「映射語法」就是 NUXT\_變數名
+
+NUXT_UPLOAD_DIR=/uploads
 需注意容器掛載路徑
 
 以上建立 secret 使用

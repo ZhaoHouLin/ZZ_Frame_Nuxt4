@@ -13,6 +13,8 @@ spec:
       labels:
         app: zz-frame-nuxt4
     spec:
+      securityContext:
+        fsGroup: 1000
       containers:
         - name: nuxt-app
           image: 192.168.79.99:5002/library/zz-frame-nuxt4:latest
@@ -26,6 +28,16 @@ spec:
             requests:
               cpu: "250m"
               memory: "256Mi"
+          envFrom:
+            - secretRef:
+                name: zz-frame-dep-secret
+          volumeMounts:
+            - name: uploads
+              mountPath: /uploads
+      volumes:
+        - name: uploads
+          persistentVolumeClaim:
+            claimName: nfs-pvc
 ---
 apiVersion: v1
 kind: Service
@@ -38,4 +50,31 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 3000
-  type: NodePort # 方便你直接用 192.168.79.100:3xxxx 測試
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-pv
+spec:
+  capacity:
+    storage: 100Gi # 宣告容量大小
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany # 允許多個 Pod 同時讀寫
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    path: /volume1/kubernetes # NAS 上的實際路徑
+    server: 192.168.79.99 # NAS IP
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
