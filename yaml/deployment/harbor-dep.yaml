@@ -25,12 +25,15 @@ spec:
               port: 3000
             initialDelaySeconds: 15 # 啟動後等 15 秒再開始檢查（給 Nuxt 一點啟動時間）
             periodSeconds: 20 # 每 20 秒檢查一次
+            failureThreshold: 3 # 連續失敗 3 次才重啟
           readinessProbe:
             httpGet:
               path: /
               port: 3000
             initialDelaySeconds: 5 # 啟動 5 秒後就開始看能不能接客
             periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
           ports:
             - containerPort: 3000
           resources:
@@ -62,7 +65,8 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 3000
-  type: ClusterIP
+      nodePort: 30080
+  type: NodePort
 
 ---
 apiVersion: v1
